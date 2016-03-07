@@ -19,7 +19,9 @@ Donne les différences entre le version ne ligne et le dossier local : $git diff
 Affiche les fichiers modifiés et ceux qui vont être commités : $git status
 
 Sélectionne les fichier a commiter : $git add
+
 		Pour tout : $git add -A
+
 Commit : $git commit -m "Message explicatif de la modification$
 
 Envoie tout vers le serveur : $git push
