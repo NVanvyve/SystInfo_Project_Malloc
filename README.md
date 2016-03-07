@@ -10,19 +10,19 @@ Une fois que le dossier Git est bien installer :
 
 Se positionner dans le dossier git
 
-Pour récupérer les modifications faites depuis la dernière fois : $ git pull
+Pour récupérer les modifications faites depuis la dernière fois : 	$ git pull
 
-Faire ses motifs
+Faire ses modifs
 
-Donne les différences entre le version ne ligne et le dossier local : $git diff
+Donne les différences entre le version ne ligne et le dossier local : 	$git diff
 
-Affiche les fichiers modifiés et ceux qui vont être commités : $git status
+Affiche les fichiers modifiés et ceux qui vont être commités : 	$git status
 
-Sélectionne les fichier a commiter : $git add
+Sélectionne les fichier a commiter : 	$git add
 
-		Pour tout : $git add -A
+		Pour tout : 	$git add -A
 
-Commit : $git commit -m "Message explicatif de la modification$
+Commit : 	$git commit -m "Message explicatif de la modification"
 
-Envoie tout vers le serveur : $git push
+Envoie tout vers le serveur : 	$git push
 
