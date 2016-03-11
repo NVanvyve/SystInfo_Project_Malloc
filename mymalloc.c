@@ -40,6 +40,7 @@ typedef struct block_header {
 } block_header;
 
 static block_header *FLOOR = NULL;
+static block_header *limit = NULL;
 
 void *mymalloc (size_t size_asked) {
   size_asked = size4(size_asked);
@@ -49,11 +50,13 @@ void *mymalloc (size_t size_asked) {
     void * err = sbrk(INIT+BH_SIZE);
     if (err == (void *) -1) return NULL;
     FLOOR->alloc = 0;
-    FLOOR->sizeblock = INIT;
+    FLOOR->sizeblock = INIT-BH_SIZE;
+	limit = FLOOR + FLOOR->sizeblock;
+	limit->alloc = 0;
+	limit->sizeblock = 0;
   }
 
 
-  block_header *limit = (block_header *) sbrk(0);
   block_header *ptr = FLOOR;
   size_t size_disp = 0;
 
@@ -63,27 +66,27 @@ void *mymalloc (size_t size_asked) {
     printf("Pointer : %p, LIMIT : %p\n", ptr, limit);
 
 	  if (ptr == limit) {
-      printf("LIMIT == PTR\n");
-      void * err = sbrk(size_asked+BH_SIZE+INIT);
+		  printf("LIMIT == PTR\n");
+		  void * err = sbrk(size_asked+BH_SIZE);
 		  if (err == (void *) -1) return NULL;
-		  limit->alloc = 1;
-		  limit->sizeblock = size_asked;
-      limit += size_asked+BH_SIZE;
-      limit->alloc = 0;
-		  limit->sizeblock = INIT;
+		  ptr->alloc = 1;
+		  ptr->sizeblock = size_asked;
+		  limit += size_asked+BH_SIZE;
+		  limit->alloc = 0;
+		  limit->sizeblock = 0;
 		  return ptr+BH_SIZE;
 	  }
 
 	  if (ptr+size_disp == limit) {
-      printf("Limit Reached\n");
-      int inc = size_asked + BH_SIZE - size_disp + INIT;
+		  printf("Limit Reached\n");
+		  int inc = size_asked + BH_SIZE - size_disp;
 		  void * err = sbrk(inc);
 		  if (err == (void *) -1) return NULL;
 		  ptr->alloc = 1;
 		  ptr->sizeblock = size_asked;
-      limit = ptr + size_asked;
-      limit->alloc=0;
-      limit->sizeblock = INIT;
+		  limit = ptr + size_asked;
+		  limit->alloc=0;
+		  limit->sizeblock = 0;
 		  return ptr+BH_SIZE;
 	  }
 
@@ -104,7 +107,7 @@ void *mymalloc (size_t size_asked) {
 
   if (size_disp != size_asked) {
 	  (ptr+size_asked+BH_SIZE)->alloc = 0;
-    printf("BSIZE : %i, SIZE_DISP : %ld, SIZE_ASKED : %ld\n", ptr->sizeblock, size_disp, size_asked);
+      printf("BSIZE : %i, SIZE_DISP : %ld, SIZE_ASKED : %ld\n", ptr->sizeblock, size_disp, size_asked);
 	  (ptr+size_asked+BH_SIZE)->sizeblock = size_disp - size_asked - BH_SIZE;
   }
 
