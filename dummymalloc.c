@@ -2,15 +2,6 @@
 #include <unistd.h>
 #include <stdio.h>
 
-/*
-Trouver un moyen de stoker l'adresse du sommet du HEAP
-avant le début de la première excéction de mymalloc
-
-Cette variable est FLOOR
-
-*/
-
-
 
 typedef struct block_header {
   unsigned int    sizeblock : 29,

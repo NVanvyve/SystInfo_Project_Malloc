@@ -8,3 +8,14 @@
 
 #include <CUnit/CUnit.h>
 #include <CUnit/Basic.h>
+
+//#include<mymalloc.h>
+
+/* TESTS POUR MALLOC */
+
+/*
+  - Verifier que on renvoie bien void*
+  - Allouer de la memoire pour deux entités
+    différente et vérifier que il n'y a pas de réécriture
+  - 
+*/
