@@ -1,0 +1,10 @@
+calloc() et malloc() renvoient un pointeur sur la mémoire allouée, qui est
+correctement alignée pour n'importe quel type de variable. Si elles échouent,
+elles renvoient NULL. NULL peut également être renvoyé par un appel réussi à
+malloc() avec un argument size égal à zéro
+
+Que renvoie free?
+  Rien
+      Il libere la mémoire, donc change la valeure du bit de poids faible (0 si pas allouée)
+
+http://sites.uclouvain.be/SystInfo/notes/Outils/html/cunit.html
