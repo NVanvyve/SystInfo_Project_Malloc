@@ -143,3 +143,7 @@ void free(void *p)
 	pthread_mutex_unlock(&thread_lock);
 	return;
 }
+
+int main(int argc, char const *argv[]) {
+	return 0;
+}
