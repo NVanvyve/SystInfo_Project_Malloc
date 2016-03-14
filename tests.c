@@ -1,10 +1,9 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <limits.h>
-#include <mymalloc.h>
+#include "mymalloc.h"
 #include "CUnit/Basic.h"
 
-//#include<mymalloc.h> //ou machin du genre
 
 /* TESTS POUR MALLOC
 
@@ -80,6 +79,26 @@ void test_mymalloc_NULL(void)
   CU_ASSERT_EQUAL(pointeurtest,NULL);
 }
 
+/* Test si apres mycalloc la valeur est bien 0 */
+void test_mycalloc_init(void)
+{
+  int* pointeurtest = NULL;
+  size_t size = 100*sizeof(int);
+  pointeurtest = mycalloc(size);
+  int i =0;
+  while (i < size)
+  {
+    if (*(pointeurtest+i) == 0)
+    {
+      i++;
+    }
+    else
+    {
+      CU_FAIL();
+    }
+    CU_PASS();
+  }
+}
 
 
 int setup(void)  { return 0; }
