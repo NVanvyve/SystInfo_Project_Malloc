@@ -7,7 +7,7 @@
 static const size_t INIT = 1024;
 
 typedef struct block_header {
-  unsigned int    sizeblock : 29,
+  unsigned int    size : 29,
                   zero : 2,
                   alloc: 1;
 } block_header;
@@ -23,10 +23,10 @@ void *mymalloc (size_t size_asked) {
     void * err = sbrk(INIT+BH_SIZE);
     if (err == (void *) -1) return NULL;
     FLOOR->alloc = 0;
-    FLOOR->sizeblock = INIT-BH_SIZE;
-	limit = FLOOR + FLOOR->sizeblock;
+    FLOOR->size = INIT-BH_SIZE;
+	limit = FLOOR + FLOOR->size;
 	limit->alloc = 0;
-	limit->sizeblock = 0;
+	limit->size = 0;
   }
 
 
@@ -35,7 +35,7 @@ void *mymalloc (size_t size_asked) {
 
   while (size_disp < size_asked) {
 
-    printf("BSIZE : %i, SIZE_DISP : %ld, SIZE_ASKED : %ld\n", ptr->sizeblock, size_disp, size_asked);
+    printf("BSIZE : %i, SIZE_DISP : %ld, SIZE_ASKED : %ld\n", ptr->size, size_disp, size_asked);
     printf("Pointer : %p, LIMIT : %p\n", ptr, limit);
 
 	  if (ptr == limit) {
@@ -43,10 +43,10 @@ void *mymalloc (size_t size_asked) {
 		  void * err = sbrk(size_asked+BH_SIZE);
 		  if (err == (void *) -1) return NULL;
 		  ptr->alloc = 1;
-		  ptr->sizeblock = size_asked;
+		  ptr->size = size_asked;
 		  limit += size_asked+BH_SIZE;
 		  limit->alloc = 0;
-		  limit->sizeblock = 0;
+		  limit->size = 0;
 		  return ptr+BH_SIZE;
 	  }
 
@@ -56,22 +56,22 @@ void *mymalloc (size_t size_asked) {
 		  void * err = sbrk(inc);
 		  if (err == (void *) -1) return NULL;
 		  ptr->alloc = 1;
-		  ptr->sizeblock = size_asked;
+		  ptr->size = size_asked;
 		  limit = ptr + size_asked;
 		  limit->alloc=0;
-		  limit->sizeblock = 0;
+		  limit->size = 0;
 		  return ptr+BH_SIZE;
 	  }
 
 	  if ((ptr+size_disp)->alloc == 0) {
       printf("ALLOC == 0\n");
-      size_disp += (ptr+size_disp)->sizeblock + BH_SIZE;
+      size_disp += (ptr+size_disp)->size + BH_SIZE;
       goto out;
     }
 
 	  if ((ptr+size_disp)->alloc == 1) {
       printf("ALLOC == 1\n");
-		  ptr += (ptr+size_disp)->sizeblock + size_disp;
+		  ptr += (ptr+size_disp)->size + size_disp;
 		  size_disp = 0;
 	  }
     out : ;
@@ -80,12 +80,12 @@ void *mymalloc (size_t size_asked) {
 
   if (size_disp != size_asked) {
 	  (ptr+size_asked+BH_SIZE)->alloc = 0;
-      printf("BSIZE : %i, SIZE_DISP : %ld, SIZE_ASKED : %ld\n", ptr->sizeblock, size_disp, size_asked);
-	  (ptr+size_asked+BH_SIZE)->sizeblock = size_disp - size_asked - BH_SIZE;
+      printf("BSIZE : %i, SIZE_DISP : %ld, SIZE_ASKED : %ld\n", ptr->size, size_disp, size_asked);
+	  (ptr+size_asked+BH_SIZE)->size = size_disp - size_asked - BH_SIZE;
   }
 
   ptr->alloc = 1;
-  ptr->sizeblock = size_asked;
+  ptr->size = size_asked;
   return ptr+BH_SIZE;
 
 }
