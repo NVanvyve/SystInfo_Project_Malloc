@@ -1,37 +1,10 @@
-/*
-Bonjour,
-
-Une petite précision importante concernant le premier projet.
-Dans l'énoncé, il est indiqué qu'il est possible d'étendre la taille du heap
-grâce à l'appel système sbrk().Pour le projet, nous vous demandons d'allouer une
-taille fixe, précisée à la ligne de commande, au début de votre
-programme (typiquement, lors du premier appel à mymalloc()). Cette extension ne
-doit être effectuée qu'une seule fois. Cela signifie que lorsque qu'il est
-impossible de satisfaire un appel à mymalloc avec l'espace préalloué
-(i.e. il n'y a pas assez d'espace libre), mymalloc doit retourner NULL
-et ne pas étendre le heap.
-
-Concrètement, le premier appel à mymalloc doit effectuer quelque chose comme cela:
-
-base_heap = sbrk(0);
-
-sbrk(memsize);
-
-où base_heap est un pointeur et memsize est la taille de la mémoire passé en paramètre.
-
-David
-*/
-
 #include <stdio.h>
 #include <ctype.h>
 #include <unistd.h>
 #define size4(x) (((((x)-1)>>2)<<2)+4)
 #define BH_SIZE (sizeof(block_header))
 
-
 static const size_t INIT = 1024;
-
-
 
 typedef struct block_header {
   unsigned int    sizeblock : 29,
@@ -118,7 +91,7 @@ void *mymalloc (size_t size_asked) {
 }
 
 void *mycalloc (size_t size){
-	void *ptr = mycalloc(size);
+	void *ptr = mycalloc(size); // Est ce que ici ce serait pas plutot mymalloc??
 	size = size4(size);
 	if (ptr == NULL) return NULL;
 	for (int i =0; i < size; i++) *(ptr+i) = 0;
@@ -132,7 +105,7 @@ void free(void *ptr) {
 int main(int argc, char const *argv[]) {
   long *ptr = (long *) mymalloc (sizeof(long));
   *ptr = 8;
-  char *ptr2 = (char *) mymalloc (4000);
+  char *ptr2 = (char *) mymalloc ((size_t)4000);
   ptr2[0] = (char) 'B';
   ptr2[1] = (char) 'I';
   ptr2[2] = (char) 'T';
