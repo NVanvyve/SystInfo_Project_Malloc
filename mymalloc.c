@@ -118,21 +118,23 @@ void *mymalloc (size_t size_asked) {
 }
 
 void *mycalloc (size_t size){
-	void *ptr = mycalloc(size);
+	void *ptr = mymalloc(size);
+  int *cl_ptr = (int *) ptr;
 	size = size4(size);
 	if (ptr == NULL) return NULL;
-	for (int i =0; i < size; i++) *(ptr+i) = 0;
+	for (int i =0; i < size; i++) *(cl_ptr+i) = 0;
 	return ptr;
 }
 
 void free(void *ptr) {
-	(ptr-4)->alloc = 0;
+  block_header *bh_ptr = ptr -4;
+  bh_ptr->alloc = 0;
 }
 
 int main(int argc, char const *argv[]) {
   long *ptr = (long *) mymalloc (sizeof(long));
   *ptr = 8;
-  char *ptr2 = (char *) mymalloc (4000);
+  char *ptr2 = (char *) mymalloc (5*sizeof(char));
   ptr2[0] = (char) 'B';
   ptr2[1] = (char) 'I';
   ptr2[2] = (char) 'T';
