@@ -4,6 +4,11 @@
 #include "mymalloc.h"
 #include "CUnit/Basic.h"
 
+typedef struct block_header {
+  unsigned int    size : 29,
+                  zero : 2,
+                  alloc: 1;
+} block_header;
 
 /* TESTS POUR MALLOC
 
@@ -34,31 +39,31 @@ void test_myfree_desalloc(void)
   int* pointeurtest = (int *) mymalloc(sizeof(int));
   myfree(pointeurtest);
   block_header *bh_test = (block_header *) (pointeurtest-4);
-  CU_ASSERT_EQUAL((*bh_test->alloc),0);
+  CU_ASSERT_EQUAL((*bh_test->alloc),0); // probleme de compilation // probleme de compilation
 }
 
 /* Test si alloc passe bien à 1 apres mymalloc*/
 void test_mymalloc_alloc(void)
 {
-  int* pointeurtest = NULL;
-  pointeurtest = mymalloc(sizeof(int));
-  CU_ASSERT_EQUAL((*(pointeurtest-4)->alloc),1);
+  int* pointeurtest = (int *) mymalloc(sizeof(int));
+  block_header *bh_test = (block_header *) (pointeurtest-4);
+  CU_ASSERT_EQUAL((*bh_test->alloc),1); // probleme de compilation // probleme de compilation
 }
 
 /* Test si alloc passe bien à 1 apres mycalloc*/
 void test_mycalloc_alloc(void)
 {
-  int* pointeurtest = NULL;
-  pointeurtest = mycalloc(sizeof(int));
-  CU_ASSERT_EQUAL((*pointeurtest->alloc),1);
+  int* pointeurtest = (int *) mycalloc(sizeof(int));
+  block_header *bh_test = (block_header *) (pointeurtest-4);
+  CU_ASSERT_EQUAL((int)(*bh_test->alloc),1); // probleme de compilation
 }
 
 /* Test si la taille demandée et la taille allouée et la meme*/
 void test_mymalloc_size(void)
 {
-  int* pointeurtest = NULL;
-  pointeurtest = mymalloc(sizeof(int));
-  CU_ASSERT_EQUAL((*pointeurtest->size),sizeof(int));
+  int* pointeurtest = (int *) mymalloc(sizeof(int));
+  block_header *bh_test = (block_header *) (pointeurtest-4);
+  CU_ASSERT_EQUAL((*bh_test->size),sizeof(int));
 }
 
 /* Test si deux appel a mymalloc ne revoie pas la meme adresse */
@@ -66,8 +71,8 @@ void test_mymalloc_two_alloc(void)
 {
   int* pointeurtest = NULL;
   int* pointeurtest2 = NULL;
-  pointeurtest = mymalloc(sizeof(int));
-  pointeurtest2 = mymalloc(sizeof(int));
+  pointeurtest = (int *) mymalloc(sizeof(int));
+  pointeurtest2 = (int *) mymalloc(sizeof(int));
   CU_ASSERT_NOT_EQUAL(pointeurtest,pointeurtest2);
 }
 
