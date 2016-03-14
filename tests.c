@@ -1,130 +1,120 @@
-#include <stdio.h>
-#include <string.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <limits.h>
+#include <mymalloc.h>
 #include "CUnit/Basic.h"
 
 //#include<mymalloc.h> //ou machin du genre
 
 /* TESTS POUR MALLOC
 
-  - Verifier que on renvoie bien void*
+  - Verifier que on renvoie bien void* ---> IMPOSSIBLE de definir le type de pointeur ou d'une varialble
   - Allouer de la memoire pour deux entités
     différente et vérifier que il n'y a pas de réécriture
-  -
+  - Verifier la taille alloué et celle demandée
 */
 
 /* TESTS POUR CALLOC
 
   - Idem MALLOC
   - Apres allocation est ce que la valeur
-    est bien egale a 0
+    est bien egale a 0 ?
   -
 */
-
-
 
 /* TESTS POUR FREE
-  - Euh...
+  - Verifier que alloc = 0 apres
   -
 */
 
+// Tests PROJET
 
-/* Exemples de tests */
-
-
-/* Pointer to the file used by the tests. */
-static FILE* temp_file = NULL;
-
-/* The suite initialization function.
- * Opens the temporary file used by the tests.
- * Returns zero on success, non-zero otherwise.
- */
-int init_suite1(void)
+/* Test si alloc passe bien à 0 apres myfree */
+void test_myfree_desalloc(void)
 {
-   if (NULL == (temp_file = fopen("temp.txt", "w+"))) {
-      return -1;
-   }
-   else {
-      return 0;
-   }
+  int* pointeurtest = NULL;
+  pointeurtest = mymalloc(sizeof(int));
+  myfree(pointeurtest);
+  CU_ASSERT_EQUAL((*pointeurtest->alloc),0);
 }
 
-/* The suite cleanup function.
- * Closes the temporary file used by the tests.
- * Returns zero on success, non-zero otherwise.
- */
-int clean_suite1(void)
+/* Test si alloc passe bien à 1 apres mymalloc*/
+void test_mymalloc_alloc(void)
 {
-   if (0 != fclose(temp_file)) {
-      return -1;
-   }
-   else {
-      temp_file = NULL;
-      return 0;
-   }
+  int* pointeurtest = NULL;
+  pointeurtest = mymalloc(sizeof(int));
+  CU_ASSERT_EQUAL((*pointeurtest->alloc),1);
 }
 
-/* Simple test of fprintf().
- * Writes test data to the temporary file and checks
- * whether the expected number of bytes were written.
- */
-void testFPRINTF(void)
+/* Test si alloc passe bien à 1 apres mycalloc*/
+void test_mycalloc_alloc(void)
 {
-   int i1 = 10;
-
-   if (NULL != temp_file) {
-      CU_ASSERT(0 == fprintf(temp_file, ""));
-      CU_ASSERT(2 == fprintf(temp_file, "Q\n"));
-      CU_ASSERT(7 == fprintf(temp_file, "i1 = %d", i1));
-   }
+  int* pointeurtest = NULL;
+  pointeurtest = mycalloc(sizeof(int));
+  CU_ASSERT_EQUAL((*pointeurtest->alloc),1);
 }
 
-/* Simple test of fread().
- * Reads the data previously written by testFPRINTF()
- * and checks whether the expected characters are present.
- * Must be run after testFPRINTF().
- */
-void testFREAD(void)
+/* Test si la taille demandée et la taille allouée et la meme*/
+void test_mymalloc_size(void)
 {
-   unsigned char buffer[20];
-
-   if (NULL != temp_file) {
-      rewind(temp_file);
-      CU_ASSERT(9 == fread(buffer, sizeof(unsigned char), 20, temp_file));
-      CU_ASSERT(0 == strncmp(buffer, "Q\ni1 = 10", 9));
-   }
+  int* pointeurtest = NULL;
+  pointeurtest = mymalloc(sizeof(int));
+  CU_ASSERT_EQUAL((*pointeurtest->size),sizeof(int));
 }
 
-/* The main() function for setting up and running the tests.
- * Returns a CUE_SUCCESS on successful running, another
- * CUnit error code on failure.
- */
+/* Test si deux appel a mymalloc ne revoie pas la meme adresse */
+void test_mymalloc_two_alloc(void)
+{
+  int* pointeurtest = NULL;
+  int* pointeurtest2 = NULL;
+  pointeurtest = mymalloc(sizeof(int));
+  pointeurtest2 = mymalloc(sizeof(int));
+  CU_ASSERT_NOT_EQUAL(pointeurtest,pointeurtest2);
+}
+
+/* Test si quand on demande d'allouer 0 bit mymalloc renvoie bien NULL */
+void test_mymalloc_NULL(void)
+{
+  int* pointeurtest = 42;
+  pointeurtest = mymalloc(0);
+  CU_ASSERT_EQUAL(pointeurtest,NULL);
+}
+
+
+
+int setup(void)  { return 0; }
+int teardown(void) { return 0; }
+
 int main()
 {
    CU_pSuite pSuite = NULL;
-
-   /* initialize the CUnit test registry */
    if (CUE_SUCCESS != CU_initialize_registry())
       return CU_get_error();
 
-   /* add a suite to the registry */
-   pSuite = CU_add_suite("Suite_1", init_suite1, clean_suite1);
+   pSuite = CU_add_suite("Suite Projet", setup, teardown);
    if (NULL == pSuite) {
       CU_cleanup_registry();
       return CU_get_error();
    }
 
-   /* add the tests to the suite */
-   /* NOTE - ORDER IS IMPORTANT - MUST TEST fread() AFTER fprintf() */
-   if ((NULL == CU_add_test(pSuite, "test of fprintf()", testFPRINTF)) ||
-       (NULL == CU_add_test(pSuite, "test of fread()", testFREAD)))
+   if ((NULL == CU_add_test(pSuite, "Test myfree desalloc",test_myfree_desalloc)) ||
+       (NULL == CU_add_test(pSuite, "Test mymalloc alloc",test_mymalloc_alloc)) ||
+       (NULL == CU_add_test(pSuite, "Test mycalloc alloc",test_mycalloc_alloc)) ||
+       (NULL == CU_add_test(pSuite, "Test mymalloc size",test_mymalloc_size)) ||
+       (NULL == CU_add_test(pSuite, "Test mymalloc NULL",test_mymalloc_NULL)) ||
+       (NULL == CU_add_test(pSuite, "Test mymalloc 2 alloc",test_mymalloc_two_alloc))
+     )
    {
-      CU_cleanup_registry();
-      return CU_get_error();
+     CU_cleanup_registry();
+     return CU_get_error();
    }
 
-   /* Run all tests using the CUnit Basic interface */
-   CU_basic_set_mode(CU_BRM_VERBOSE);
+//   CU_basic_set_mode(CU_BRM_VERBOSE);
    CU_basic_run_tests();
+   printf("\n");
+   CU_basic_show_failures(CU_get_failure_list());
+   printf("\n\n");
+
    CU_cleanup_registry();
    return CU_get_error();
 }
