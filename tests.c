@@ -31,10 +31,10 @@
 /* Test si alloc passe bien à 0 apres myfree */
 void test_myfree_desalloc(void)
 {
-  int* pointeurtest = NULL;
-  pointeurtest = mymalloc(sizeof(int));
+  int* pointeurtest = (int *) mymalloc(sizeof(int));
   myfree(pointeurtest);
-  CU_ASSERT_EQUAL((*pointeurtest->alloc),0);
+  block_header *bh_test = (block_header *) (pointeurtest-4);
+  CU_ASSERT_EQUAL((*bh_test->alloc),0);
 }
 
 /* Test si alloc passe bien à 1 apres mymalloc*/
@@ -42,7 +42,7 @@ void test_mymalloc_alloc(void)
 {
   int* pointeurtest = NULL;
   pointeurtest = mymalloc(sizeof(int));
-  CU_ASSERT_EQUAL((*pointeurtest->alloc),1);
+  CU_ASSERT_EQUAL((*(pointeurtest-4)->alloc),1);
 }
 
 /* Test si alloc passe bien à 1 apres mycalloc*/
@@ -121,7 +121,8 @@ int main()
        (NULL == CU_add_test(pSuite, "Test mycalloc alloc",test_mycalloc_alloc)) ||
        (NULL == CU_add_test(pSuite, "Test mymalloc size",test_mymalloc_size)) ||
        (NULL == CU_add_test(pSuite, "Test mymalloc NULL",test_mymalloc_NULL)) ||
-       (NULL == CU_add_test(pSuite, "Test mymalloc 2 alloc",test_mymalloc_two_alloc))
+       (NULL == CU_add_test(pSuite, "Test mymalloc 2 alloc",test_mymalloc_two_alloc)) ||
+       (NULL == CU_add_test(pSuite, "Test mycalloc initialisation",test_mycalloc_init))
      )
    {
      CU_cleanup_registry();
