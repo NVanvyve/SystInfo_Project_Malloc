@@ -1,79 +1,56 @@
+/*
+Systemes Informatique LSINF1252
+Projet 1 :  Implementation de mymalloc, mycalloc et myfree
+
+AIGRET Julien   8343-1300
+VANVYVE Nicolas 6590-1300
+
+MARS 2016
+*/
+
 #include <stdlib.h>
 #include <stdbool.h>
-#include <limits.h>
 #include "mymalloc.h"
+#include <limits.h>
 #include "CUnit/Basic.h"
 
-typedef struct block_header {
-  unsigned int    size : 29,
-                  zero : 2,
-                  alloc: 1;
-} block_header;
-
-/* TESTS POUR MALLOC
-
-  - Verifier que on renvoie bien void* ---> IMPOSSIBLE de definir le type de pointeur ou d'une varialble
-  - Allouer de la memoire pour deux entités
-    différente et vérifier que il n'y a pas de réécriture
-  - Verifier la taille alloué et celle demandée
+/*
+  Tests en CUnit pour le projet 1.
 */
 
-/* TESTS POUR CALLOC
-
-  - Idem MALLOC
-  - Apres allocation est ce que la valeur
-    est bien egale a 0 ?
-  -
-*/
-
-/* TESTS POUR FREE
-  - Verifier que alloc = 0 apres
-  -
-*/
-
-// Tests PROJET
 
 /* Test si alloc passe bien à 0 apres myfree */
 void test_myfree_desalloc(void)
 {
   int* pointeurtest = (int *) mymalloc(sizeof(int));
   myfree(pointeurtest);
-  //block_header *bh_test = (block_header *) (pointeurtest-4);
-  //CU_ASSERT_EQUAL((*bh_test->alloc),0);
-  CU_ASSERT_EQUAL((*(pointeurtest-4)->alloc),0); // probleme de compilation
-
+  block_header *bh_test = ((block_header *)(pointeurtest))-4;
+  CU_ASSERT_EQUAL(((*bh_test).alloc),0);
 }
-
-/*
-Est ce que on peut parler de block_header ici? Comment importer cette structure?
-
-Et bordel de merde comment on fait pour faire tourner ces tests de merde sur unbuntu??
-Ok en salle mais impossible sur mon ordi
-*/
 
 /* Test si alloc passe bien à 1 apres mymalloc*/
 void test_mymalloc_alloc(void)
 {
   int* pointeurtest = (int *) mymalloc(sizeof(int));
-  block_header *bh_test = (block_header *) (pointeurtest-4);
-  CU_ASSERT_EQUAL((*bh_test->alloc),1); // probleme de compilation
+  block_header *bh_test = ((block_header *)(pointeurtest))-4;
+  CU_ASSERT_EQUAL(((*bh_test).alloc),1);
 }
 
 /* Test si alloc passe bien à 1 apres mycalloc*/
 void test_mycalloc_alloc(void)
 {
   int* pointeurtest = (int *) mycalloc(sizeof(int));
-  block_header *bh_test = (block_header *) (pointeurtest-4);
-  CU_ASSERT_EQUAL((int)(*bh_test->alloc),1); // probleme de compilation
+  block_header *bh_test = ((block_header *)(pointeurtest))-4;
+  CU_ASSERT_EQUAL(((*bh_test).alloc),1);
 }
 
-/* Test si la taille demandée et la taille allouée et la meme*/
+/* Test si la taille demandée et la taille allouée et la meme (ajustée pour etre un multiple de 4)*/
 void test_mymalloc_size(void)
 {
-  size_t ask = (sizeof(int)+3)
+  size_t ask = (sizeof(int)+3);
   int* pointeurtest = (int *) mymalloc(ask);
   block_header *bh_test = (block_header *) (pointeurtest-4);
-  CU_ASSERT_EQUAL((*bh_test->size),size4(ask));
+  CU_ASSERT_EQUAL(((*bh_test).size),size4(ask));
 }
 
 /* Test si deux appel a mymalloc ne revoie pas la meme adresse */
@@ -89,8 +66,7 @@ void test_mymalloc_two_alloc(void)
 /* Test si quand on demande d'allouer 0 bit mymalloc renvoie bien NULL */
 void test_mymalloc_NULL(void)
 {
-  int* pointeurtest = 42;
-  pointeurtest = mymalloc(0);
+  void* pointeurtest = mymalloc(0);
   CU_ASSERT_EQUAL(pointeurtest,NULL);
 }
 

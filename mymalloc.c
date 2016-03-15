@@ -1,33 +1,18 @@
 /*
-
 Systemes Informatique LSINF1252
 Projet 1 :  Implementation de mymalloc, mycalloc et myfree
 
-AIGRET Julien   xxxx-1300
+AIGRET Julien   8343-1300
 VANVYVE Nicolas 6590-1300
 
 MARS 2016
-
 */
 #include <stdio.h>
 #include <ctype.h>
 #include <unistd.h>
 #include "mymalloc.h"
-//#define size4(x) (((((x)-1)>>2)<<2)+4)
-#define BH_SIZE 4
-
 
 static const size_t MB = 1024*1024;
-
-
-
-/*
-typedef struct block_header {
-  unsigned int    size : 29,
-                  zero : 2,
-                  alloc: 1;
-} block_header;
-*/
 
 static block_header *FLOOR = NULL;
 static block_header *limit = NULL;
@@ -142,7 +127,7 @@ void *mycalloc (size_t size){
         ou s'il a déjà été libéré avec myfree(ptr), le comportement est indéterminé.
         Si ptr est NULL, aucune tentative de libération n'a lieu.
 */
-void free(void *ptr) {
+void myfree(void *ptr) {
   if (ptr==NULL) {return;}
   block_header *bh_ptr = ptr -4;
   bh_ptr->alloc = 0;
