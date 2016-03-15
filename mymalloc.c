@@ -33,11 +33,6 @@ static block_header *FLOOR = NULL;
 static block_header *limit = NULL;
 static block_header *last = NULL;
 
-/*
-  @pre  :
-  @post :
-*/
-
 void *mymalloc (size_t size_asked) {
 
   if (size_asked == 0) return NULL;
@@ -131,11 +126,6 @@ void *mymalloc (size_t size_asked) {
   return best_ptr+BH_SIZE;
 
 }
-
-/*
-  @pre  :
-  @post :
-*/
 
 void *mycalloc (size_t size){
 	void *ptr = mymalloc(size);
