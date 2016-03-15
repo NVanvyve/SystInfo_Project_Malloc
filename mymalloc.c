@@ -19,11 +19,13 @@ MARS 2016
 
 static const size_t INIT = 1024;
 
+/*
 typedef struct block_header {
   unsigned int    size : 29,
                   zero : 2,
                   alloc: 1;
 } block_header;
+*/
 
 static block_header *FLOOR = NULL;
 static block_header *limit = NULL;
@@ -108,7 +110,7 @@ void *mymalloc (size_t size_asked) {
   return ptr+BH_SIZE;
 
 }
-/* 
+/*
   @pre  :
   @post :
 */
@@ -134,7 +136,7 @@ void free(void *ptr)
 	(ptr-4)->alloc = 0;
   /*
     Que se passe-t-il l'adresse introduite n'est pas le début
-    de la zone mémoire alloué
+    de la zone mémoire alloué ---> Comportement indeterminé!!
   */
 }
 
