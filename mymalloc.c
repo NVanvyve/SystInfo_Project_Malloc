@@ -1,3 +1,14 @@
+/*
+
+Systemes Informatique LSINF1252
+Projet 1 :  Implementation de mymalloc, mycalloc et myfree
+
+AIGRET Julien   xxxx-1300
+VANVYVE Nicolas 6590-1300
+
+MARS 2016
+
+*/
 #include <stdio.h>
 #include <ctype.h>
 #include <unistd.h>
@@ -16,6 +27,12 @@ typedef struct block_header {
 
 static block_header *FLOOR = NULL;
 static block_header *limit = NULL;
+
+
+/*
+  @pre  :
+  @post :
+*/
 
 void *mymalloc (size_t size_asked) {
   size_asked = size4(size_asked);
@@ -91,7 +108,10 @@ void *mymalloc (size_t size_asked) {
   return ptr+BH_SIZE;
 
 }
-
+/* 
+  @pre  :
+  @post :
+*/
 void *mycalloc (size_t size){
 	void *ptr = mycalloc(size); // Est ce que ici ce serait pas plutot mymalloc??
 	size = size4(size);
@@ -100,7 +120,17 @@ void *mycalloc (size_t size){
 	return ptr;
 }
 
-void free(void *ptr) {
+/*
+@pre  : ptr est un pointeur obtenu via mymalloc ou mycalloc
+@post : free() libère l'espace mémoire pointé par ptr, qui a été obtenu
+        lors d'un appel antérieur à mymalloc() ou mycalloc().
+        Si le pointeur ptr n'a pas été obtenu par l'un de ces appels,
+        ou s'il a déjà été libéré avec myfree(ptr), le comportement est indéterminé.
+        Si ptr est NULL, aucune tentative de libération n'a lieu.
+*/
+void free(void *ptr)
+{
+  if (ptr==NULL) {return;}
 	(ptr-4)->alloc = 0;
   /*
     Que se passe-t-il l'adresse introduite n'est pas le début
