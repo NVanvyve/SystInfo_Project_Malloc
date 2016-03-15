@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <unistd.h>
+#include "mymalloc.h"
+
 #define size4(x) (((((x)-1)>>2)<<2)+4)
 #define BH_SIZE (sizeof(block_header))
 
@@ -100,6 +102,10 @@ void *mycalloc (size_t size){
 
 void free(void *ptr) {
 	(ptr-4)->alloc = 0;
+  /*
+    Que se passe-t-il l'adresse introduite n'est pas le début
+    de la zone mémoire alloué
+  */
 }
 
 int main(int argc, char const *argv[]) {
