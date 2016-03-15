@@ -30,6 +30,10 @@ static block_header *FLOOR = NULL;
 static block_header *limit = NULL;
 static block_header *last = NULL;
 
+/*
+@pre  : Recoit une taille de memoire a allouer dans le heap
+@post : Retourne un void * vers une zone de memoire allouee de la taille size arrondie au premier multiple de 4 superieur ou egal a size, ou NULL si la size etait 0 ou qu il n a pas pu allouer de memoire dans le heap.
+*/
 void *mymalloc (size_t size_asked) {
 
   if (size_asked == 0) return NULL;
@@ -61,43 +65,33 @@ void *mymalloc (size_t size_asked) {
     while ((ptr + size_disp) < last && (ptr+size_disp)->alloc == 0 && size_disp != size_asked){
       size_disp += (ptr + size_disp)->size + BH_SIZE;
     }
-    //printf("COUNT OUT\n");
 
     if (ptr == last  || ptr + size_disp == last ) {
       limit_reached = 1;
-      printf("LAST\n");
     }
 
     if (size_disp == size_asked){
-      printf("EQUAL\n");
       best_fit = 1;
       best_size = size_disp;
       best_ptr = ptr;
     }
 
     if (size_disp > size_asked) {
-      printf("MORE\n");
       fit = 1;
       if (size_disp > best_size) {
         best_ptr = ptr;
         best_size = size_disp;
       }
       ptr += ptr->size;
-      //goto out;
     }
 
     if (size_disp < size_asked && !limit_reached) {
-      printf("LESS\n");
       ptr += size_disp + BH_SIZE + (ptr+size_disp)->size;
     }
-
-    //out : ;
 
 
 
   }
-
-  printf("OUT\n");
 
   if (!fit) {
     if (ptr+size_asked > limit) return NULL;
@@ -110,10 +104,7 @@ void *mymalloc (size_t size_asked) {
     return ptr+BH_SIZE;
   }
 
-  printf("NON NULL\n");
-
   if (best_size != size_asked) {
-      printf("RESIZE\n");
 	  (best_ptr+BH_SIZE+size_asked)->alloc = 0;
     (best_ptr+BH_SIZE+size_asked)->size = best_size - size_asked - BH_SIZE;
   }
@@ -124,6 +115,10 @@ void *mymalloc (size_t size_asked) {
 
 }
 
+/*
+@pre  : Recoit une taille de memoire a allouer et initialiser dans le heap
+@post : Retourne un void * vers une zone de memoire allouee et initialisee de la taille size arrondie au premier multiple de 4 superieur ou egal a size, ou NULL si la size etait 0 ou qu il n a pas pu allouer de memoire dans le heap.
+*/
 void *mycalloc (size_t size){
 	void *ptr = mymalloc(size);
   int *cl_ptr = (int *) ptr;
