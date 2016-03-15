@@ -38,16 +38,25 @@ void test_myfree_desalloc(void)
 {
   int* pointeurtest = (int *) mymalloc(sizeof(int));
   myfree(pointeurtest);
-  block_header *bh_test = (block_header *) (pointeurtest-4);
-  CU_ASSERT_EQUAL((*bh_test->alloc),0); // probleme de compilation // probleme de compilation
+  //block_header *bh_test = (block_header *) (pointeurtest-4);
+  //CU_ASSERT_EQUAL((*bh_test->alloc),0);
+  CU_ASSERT_EQUAL((*(pointeurtest-4)->alloc),0); // probleme de compilation
+
 }
+
+/*
+Est ce que on peut parler de block_header ici? Comment importer cette structure?
+
+Et bordel de merde comment on fait pour faire tourner ces tests de merde sur unbuntu??
+Ok en salle mais impossible sur mon ordi
+*/
 
 /* Test si alloc passe bien à 1 apres mymalloc*/
 void test_mymalloc_alloc(void)
 {
   int* pointeurtest = (int *) mymalloc(sizeof(int));
   block_header *bh_test = (block_header *) (pointeurtest-4);
-  CU_ASSERT_EQUAL((*bh_test->alloc),1); // probleme de compilation // probleme de compilation
+  CU_ASSERT_EQUAL((*bh_test->alloc),1); // probleme de compilation
 }
 
 /* Test si alloc passe bien à 1 apres mycalloc*/
