@@ -35,7 +35,9 @@ static block_header *last = NULL;
 
 /*
 @pre  : Recoit une taille de memoire a allouer dans le heap
-@post : Retourne un void * vers une zone de memoire allouee de la taille size arrondie au premier multiple de 4 superieur ou egal a size, ou NULL si la size etait 0 ou qu il n a pas pu allouer de memoire dans le heap.
+@post : Retourne un void * vers une zone de memoire allouee de la taille size arrondie
+        au premier multiple de 4 superieur ou egal a size, ou NULL si la size etait
+        0 ou qu il n a pas pu allouer de memoire dans le heap.
 */
 void *mymalloc (size_t size_asked) {
 
@@ -120,7 +122,9 @@ void *mymalloc (size_t size_asked) {
 
 /*
 @pre  : Recoit une taille de memoire a allouer et initialiser dans le heap
-@post : Retourne un void * vers une zone de memoire allouee et initialisee de la taille size arrondie au premier multiple de 4 superieur ou egal a size, ou NULL si la size etait 0 ou qu il n a pas pu allouer de memoire dans le heap.
+@post : Retourne un void * vers une zone de memoire allouee et initialisee de la taille
+         size arrondie au premier multiple de 4 superieur ou egal a size, ou NULL si la
+         size etait 0 ou qu il n a pas pu allouer de memoire dans le heap.
 */
 void *mycalloc (size_t size){
 	void *ptr = mymalloc(size);
