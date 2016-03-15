@@ -12,7 +12,8 @@ MARS 2016
 #include <stdio.h>
 #include <ctype.h>
 #include <unistd.h>
-#define size4(x) (((((x)-1)>>2)<<2)+4)
+#include "mymalloc.h"
+//#define size4(x) (((((x)-1)>>2)<<2)+4)
 #define BH_SIZE 4
 
 
@@ -20,15 +21,22 @@ static const size_t MB = 1024*1024;
 
 
 
+/*
 typedef struct block_header {
   unsigned int    size : 29,
                   zero : 2,
                   alloc: 1;
 } block_header;
+*/
 
 static block_header *FLOOR = NULL;
 static block_header *limit = NULL;
 static block_header *last = NULL;
+
+/*
+  @pre  :
+  @post :
+*/
 
 void *mymalloc (size_t size_asked) {
 
@@ -124,6 +132,11 @@ void *mymalloc (size_t size_asked) {
 
 }
 
+/*
+  @pre  :
+  @post :
+*/
+
 void *mycalloc (size_t size){
 	void *ptr = mymalloc(size);
   int *cl_ptr = (int *) ptr;
@@ -132,8 +145,16 @@ void *mycalloc (size_t size){
 	for (int i =0; i < size; i++) *(cl_ptr+i) = 0;
 	return ptr;
 }
-
+/*
+@pre  : ptr est un pointeur obtenu via mymalloc ou mycalloc
+@post : free() libère l'espace mémoire pointé par ptr, qui a été obtenu
+        lors d'un appel antérieur à mymalloc() ou mycalloc().
+        Si le pointeur ptr n'a pas été obtenu par l'un de ces appels,
+        ou s'il a déjà été libéré avec myfree(ptr), le comportement est indéterminé.
+        Si ptr est NULL, aucune tentative de libération n'a lieu.
+*/
 void free(void *ptr) {
+  if (ptr==NULL) {return;}
   block_header *bh_ptr = ptr -4;
   bh_ptr->alloc = 0;
 }
