@@ -70,9 +70,10 @@ void test_mycalloc_alloc(void)
 /* Test si la taille demandée et la taille allouée et la meme*/
 void test_mymalloc_size(void)
 {
-  int* pointeurtest = (int *) mymalloc(sizeof(int));
+  size_t ask = (sizeof(int)+3)
+  int* pointeurtest = (int *) mymalloc(ask);
   block_header *bh_test = (block_header *) (pointeurtest-4);
-  CU_ASSERT_EQUAL((*bh_test->size),sizeof(int));
+  CU_ASSERT_EQUAL((*bh_test->size),size4(ask));
 }
 
 /* Test si deux appel a mymalloc ne revoie pas la meme adresse */

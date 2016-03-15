@@ -14,7 +14,7 @@ MARS 2016
 #include <unistd.h>
 #include "mymalloc.h"
 
-#define size4(x) (((((x)-1)>>2)<<2)+4)
+//#define size4(x) (((((x)-1)>>2)<<2)+4)
 #define BH_SIZE (sizeof(block_header))
 
 static const size_t INIT = 1024;

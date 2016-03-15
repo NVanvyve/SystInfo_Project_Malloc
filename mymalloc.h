@@ -6,3 +6,4 @@ typedef struct block_header {
                   zero : 2,
                   alloc: 1;
 } block_header;
+#define size4(x) (((((x)-1)>>2)<<2)+4)
