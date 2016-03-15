@@ -132,7 +132,7 @@ void myfree(void *ptr) {
   block_header *bh_ptr = ptr -4;
   bh_ptr->alloc = 0;
 }
-
+/*
 int main(int argc, char const *argv[]) {
   int *ptr = (int *) mymalloc (sizeof(int));
   *ptr = 8;
@@ -155,3 +155,4 @@ int main(int argc, char const *argv[]) {
   printf("Adresse 4  : %p, valeur (22): %ld\n", ptr4, *ptr4 );
   return 0;
 }
+*/

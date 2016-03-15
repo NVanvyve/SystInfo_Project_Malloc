@@ -2,17 +2,17 @@
 Systemes Informatique LSINF1252
 Projet 1 :  Implementation de mymalloc, mycalloc et myfree
 
-AIGRET Julien   8343-1300
-VANVYVE Nicolas 6590-1300
+AIGRET Julien   8343-13-00
+VANVYVE Nicolas 6590-13-00
 
 MARS 2016
 */
 
 #include <stdlib.h>
-#include <stdbool.h>
+//#include <stdbool.h>
+#include <CUnit/CUnit.h>
+#include <CUnit/Basic.h>
 #include "mymalloc.h"
-#include <limits.h>
-#include "CUnit/Basic.h"
 
 /*
   Tests en CUnit pour le projet 1.
@@ -24,7 +24,7 @@ void test_myfree_desalloc(void)
 {
   int* pointeurtest = (int *) mymalloc(sizeof(int));
   myfree(pointeurtest);
-  block_header *bh_test = ((block_header *)(pointeurtest))-4;
+  block_header *bh_test = ((block_header *)(pointeurtest-4));
   CU_ASSERT_EQUAL(((*bh_test).alloc),0);
 }
 
@@ -32,7 +32,7 @@ void test_myfree_desalloc(void)
 void test_mymalloc_alloc(void)
 {
   int* pointeurtest = (int *) mymalloc(sizeof(int));
-  block_header *bh_test = ((block_header *)(pointeurtest))-4;
+  block_header *bh_test = (block_header *) (pointeurtest-4);
   CU_ASSERT_EQUAL(((*bh_test).alloc),1);
 }
 
@@ -40,7 +40,7 @@ void test_mymalloc_alloc(void)
 void test_mycalloc_alloc(void)
 {
   int* pointeurtest = (int *) mycalloc(sizeof(int));
-  block_header *bh_test = ((block_header *)(pointeurtest))-4;
+  block_header *bh_test = (block_header *) (pointeurtest-4);
   CU_ASSERT_EQUAL(((*bh_test).alloc),1);
 }
 
