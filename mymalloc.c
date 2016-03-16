@@ -14,7 +14,7 @@ MARS 2016
 
 static const size_t MB = 1024*1024; // Taille de notre heap a sa premiere initialisation
 
-static block_header *FLOOR = NULL; // Pointeur qui sera le repere de début de notre zone de heap
+static block_header *FLOOR = NULL; // Pointeur qui sera le repere de debut de notre zone de heap
 static block_header *limit = NULL; // Pointeur qui sera la fin de notre zone de heap
 static block_header *last = NULL; // Pointeur vers le dernier block_header cree
 
@@ -123,20 +123,23 @@ void *mycalloc (size_t size){
 }
 /*
 @pre  : ptr est un pointeur obtenu via mymalloc ou mycalloc
-@post : free() libère l'espace mémoire pointé par ptr, qui a été obtenu
-        lors d'un appel antérieur à mymalloc() ou mycalloc().
-        Si le pointeur ptr n'a pas été obtenu par l'un de ces appels,
-        ou s'il a déjà été libéré avec myfree(ptr), le comportement est indéterminé.
-        Si ptr est NULL, aucune tentative de libération n'a lieu.
+@post : free() libere l'espace memoire pointe par ptr, qui a ete obtenu
+        lors d'un appel anterieur a mymalloc() ou mycalloc().
+        Si le pointeur ptr n'a pas ete obtenu par l'un de ces appels,
+        ou s'il a deja ete libere avec myfree(ptr), le comportement est indetermine.
+        Si ptr est NULL, aucune tentative de liberation n'a lieu.
 */
 void myfree(void *ptr) {
-  if (ptr==NULL) return; // Si on ne nous fourni pas un pointeur on ne fiait rien
+  if (ptr==NULL) return; // Si on ne nous fourni pas un pointeur on ne fait rien
   block_header *bh_ptr = ptr -4; // On trouve le bon BH
   if (bh_ptr >= limit) return; // Si il n'appartient pas a notre heap
   if (bh_ptr < FLOOR) return; // on n y touche pas
   bh_ptr->alloc = 0; // Si il fait bien partie de notre heap, on le libere
 }
+
 /*
+// Tests intermÃ©diaires
+
 int main(int argc, char const *argv[]) {
   int *ptr = (int *) mymalloc (sizeof(int));
   *ptr = 8;
