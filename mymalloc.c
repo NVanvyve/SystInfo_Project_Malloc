@@ -14,9 +14,10 @@ MARS 2016
 
 static const size_t MB = 1024*1024; // Taille de notre heap a sa premiere initialisation
 
-static block_header *FLOOR = NULL; // Pointeur qui sera le repere de debut de notre zone de heap
+static block_header *FLOOR = NULL; // Pointeur qui sera le repere de debut
+                                   // de notre zone de heap
 static block_header *limit = NULL; // Pointeur qui sera la fin de notre zone de heap
-static block_header *last = NULL; // Pointeur vers le dernier block_header cree
+static block_header *last = NULL;  // Pointeur vers le dernier block_header cree
 
 /*
 @pre  : Recoit une taille de memoire a allouer dans le heap
@@ -28,7 +29,8 @@ void *mymalloc (size_t size_asked) {
 
   if (size_asked == 0) return NULL; // Si on nous demande un zone de taille 0, renvoie NULL
 
-  size_asked = size4(size_asked); // Transforme la taille demandee en un multiple de 4 superieur ou egal
+  size_asked = size4(size_asked); // Transforme la taille demandee en un
+                                  // multiple de 4 superieur ou egal
 
   if (FLOOR == NULL) { // Si c'est le premier appel a mymalloc
     FLOOR = (block_header *) sbrk(0);
@@ -139,9 +141,7 @@ void *mycalloc (size_t size){
 */
 void myfree(void *ptr) {
   if (ptr==NULL) return; // Si on ne nous fourni pas un pointeur on ne fait rien
-  //printf("\nFREE POINTEUR : %p\n", ptr);
   block_header *bh_ptr = ptr-BH_SIZE; // On trouve le bon BH
-  //printf("FREE BLOCK_HEADER : %p\n", bh_ptr);
   if (bh_ptr >= limit) return; // Si il n appartient pas a notre heap
   if (bh_ptr < FLOOR) return; // on n y touche pas
   bh_ptr->alloc = 0; // Si il fait bien partie de notre heap, on le libere

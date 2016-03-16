@@ -1,5 +1,0 @@
-\select@language {french}
-\contentsline {section}{\numberline {1}Gestion de la m\IeC {\'e}moire}{1}
-\contentsline {subsection}{\numberline {1.1}Initialisation}{1}
-\contentsline {subsection}{\numberline {1.2}Gestion de la fragmentation}{1}
-\contentsline {section}{\numberline {2}Tests comparatifs}{1}
