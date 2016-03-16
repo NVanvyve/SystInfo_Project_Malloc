@@ -146,3 +146,12 @@ void myfree(void *ptr) {
   if (bh_ptr < FLOOR) return; // on n y touche pas
   bh_ptr->alloc = 0; // Si il fait bien partie de notre heap, on le libere
 }
+
+
+/*
+C'est un mec qui dit à ses potes :
+- Hier j'ai détaché une fille des rails et puis je lui ai fait l'amour.
+Ses potes lui demandent :
+- Et quoi elle était belle ?
+- Je sais pas y avait plus sa tête !
+*/
