@@ -8,11 +8,15 @@
 \usepackage{makeidx}
 \usepackage{graphicx}
 \usepackage{lmodern}
+\usepackage{verbatim}
 
-\author{Aigret Julien\and Vanvyve Nicolas}
-\date{16.03.2016}
+
+\author{Aigret Julien \texttt{(8343-13-00)}\and Vanvyve Nicolas \texttt{(6590-13-00)}}
+\date{16 mars 2016}
 \title{LSINF1252\\Rapport de projet 1 :\\Implémentation de malloc, calloc et free}
+
 \begin{document}
+
 \maketitle
 
 \section{Gestion de la mémoire}
@@ -21,17 +25,27 @@ Nous avons fait le choix d'initialiser notre heap à 1MB, taille qui semble rais
 
 \subsection{Fragmentation}
 Dans notre programme, nous avons fait le choix d'allouer immédiatement une zone de mémoire (ou une combinaison de zones de mémoire) si elle est de la taille demandée. Dans le cas où il n'y a pas
+\section{Tests unitaires}
+
+%\begin{verbatim} \end{verbatim}
+
+Nous avons implémenté les tests unitaires décrits ci dessous via CUnit. 
+\begin{itemize}
+	\item [$\bullet$] Myfree desalloc: nous vérifions que \texttt{alloc} de \texttt{block\_header} vaut bien 0.
+	\item [$\bullet$] Mymalloc alloc : idem que ci dessus mais \texttt{alloc} de \texttt{block\_header} doit valoir 1
+	\item [$\bullet$] Mycalloc alloc : idem que Mymalloc alloc
+	\item [$\bullet$] Mymalloc size : nous vérifions que l'espace alloué correspond bien au multiple de 4 supérieur ou égal(en byte) de celui demandé. 
+	\item [$\bullet$] Mymalloc NULL : nous vérifions que si 0 byte sont demandé \texttt{mymalloc} renvoie \texttt{NULL}
+	\item [$\bullet$] Mymalloc 2 alloc : nous vérifions que deux allocation successive via \texttt{mymalloc} ne pointe pas vers la meme adresse
+	\item [$\bullet$] Mycalloc initialisation : nous vérifions que après un appel à \texttt{mycalloc} la mémoire allouée est bien initialisée à 0 
+\end{itemize} 
+Les test qui s'applique à \texttt{mymalloc} aurait pu etre transformés pour \texttt{mycalloc}. Mais étant donné que nous avons utilisé \texttt{mymalloc} pour implémenter le second cela ne servirait à rien.
+
 \section{Tests comparatifs}
-
-
-
+\end{document}
 %Consignes
-
 %Vous devez écrire un rapport au format PDF d’une ou deux pages, contenant les ex-
 %plications de votre implémentation, les difficultés rencontrées, les cas couverts par vos
 %tests unitaires ainsi qu’une figure montrant les résultats d’une mesure de performance
 %de votre implémentation.
-
 % Mesure de performance : comparer malloc et mymalloc
-
-\end{document}
