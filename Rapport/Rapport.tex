@@ -21,10 +21,11 @@
 
 \section{Gestion de la mémoire}
 \subsection{Initialisation}
-Nous avons fait le choix d'initialiser notre heap à 1MB, taille qui semble raisonnable pour notre utilisation actuelle, mais qui eut être modifiée si besoin est.
+Nous avons fait le choix d'initialiser notre heap à 1MB, taille qui semble raisonnable pour notre utilisation actuelle, mais qui eut être modifiée si besoin est. Cette limite n'est pas modifiée tout au long de l'éxécution de notre code.
 
 \subsection{Fragmentation}
-Dans notre programme, nous avons fait le choix d'allouer immédiatement une zone de mémoire (ou une combinaison de zones de mémoire) si elle est de la taille demandée. Dans le cas où il n'y a pas
+Dans notre programme, nous avons fait le choix d'allouer immédiatement une zone de mémoire (ou une combinaison de zones de mémoire) si elle est de la taille demandée par l'utilisateur. Dans le cas où il n'y a pas de zone de mémoire de taille précise, deux cas de figure se présentent : soit une ou des zones plus grandes ont été trouvées, ou aucune de taille suffisante n'a été trouvée. Dans le cas où une plus grande zone a été trouvée, nous gardons la plus grande de toutes et y installons notre zone de mémoire, créant un nouveau blockheader à la fin de celle-ci pointant sur la fin de la "zone libre".
+
 
 \section{Tests unitaires}
 
@@ -40,7 +41,12 @@ Nous avons implémenté les tests unitaires décrits ci dessous via CUnit.
 \end{itemize}
 Les test qui s'applique à \texttt{mymalloc} aurait pu etre transformés pour \texttt{mycalloc}. Mais étant donné que nous avons utilisé \texttt{mymalloc} pour implémenter le second cela ne servirait à rien.
 
+
 \section{Tests comparatifs}
+
+Nous constatons, comme illustré sur les graphe (fig !! Ref needed) que nos fonctions sont plus rapides pour les faibles allocations de mémoires, mais plus la mémoire devient grande et plus elles prennent du temps. Cela est certainelent dû aux algorithmes de recherches utilisés par les fonctions built-in qui doivent être optimisés pour le grandes zones de mémoire. Notre initialisation de la zone mémoire par calloc est aussi très rudimentaire, et prend de plus en plus de temps au fur et à mesure que la taille de la zone à initialiser augmente.
+
+
 \end{document}
 %Consignes
 %Vous devez écrire un rapport au format PDF d’une ou deux pages, contenant les ex-
