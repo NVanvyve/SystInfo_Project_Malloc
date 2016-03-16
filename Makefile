@@ -28,4 +28,4 @@ clean:
 	@rm -rf *.o
 
 mrproper: clean
-	@rm -rf mymalloc
+	@rm -rf mymalloc perf perfvect
