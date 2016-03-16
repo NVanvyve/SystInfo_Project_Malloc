@@ -14,3 +14,9 @@ clean:
 
 mrproper: clean
 	rm -rf mymalloc
+
+perf.o: perf.c mymalloc.h
+	gcc -c perf.c -o perf.o
+
+perf: mymalloc.o perf.o
+	gcc -o perf mymalloc.o perf.o
