@@ -60,6 +60,38 @@ int main(int argc, char *argv[])
     //printf("Mymalloc\nDuration : %ld microseconds\n\n", timeval_diff(&tvEnd, &tvStart));
     printf("Mycalloc\nDuration : %ld microseconds\n\n", timeval_diff(&tvEnd, &tvStart));
 
+////////////////////////
+
+err=gettimeofday(&tvStart, NULL);
+if(err!=0)
+  exit(EXIT_FAILURE);
+
+malloc(num*sizeof(char));
+//calloc(num,sizeof(char));
+
+err=gettimeofday(&tvEnd, NULL);
+if(err!=0)
+  exit(EXIT_FAILURE);
+
+printf("Malloc\nDuration : %ld microseconds\n\n", timeval_diff(&tvEnd, &tvStart));
+//printf("Calloc\nDuration : %ld microseconds\n\n", timeval_diff(&tvEnd, &tvStart));
+
+
+err=gettimeofday(&tvStart, NULL);
+if(err!=0)
+  exit(EXIT_FAILURE);
+
+mymalloc(num*sizeof(char));
+//mycalloc(num*sizeof(char));
+
+err=gettimeofday(&tvEnd, NULL);
+if(err!=0)
+  exit(EXIT_FAILURE);
+
+  printf("Mymalloc\nDuration : %ld microseconds\n\n", timeval_diff(&tvEnd, &tvStart));
+  //printf("Mycalloc\nDuration : %ld microseconds\n\n", timeval_diff(&tvEnd, &tvStart));
+
+
 
   return(EXIT_SUCCESS);
 }
