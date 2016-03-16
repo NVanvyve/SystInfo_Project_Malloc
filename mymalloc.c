@@ -146,30 +146,3 @@ void myfree(void *ptr) {
   if (bh_ptr < FLOOR) return; // on n y touche pas
   bh_ptr->alloc = 0; // Si il fait bien partie de notre heap, on le libere
 }
-
-/*
-// Tests intermédiaires
-
-int main(int argc, char const *argv[]) {
-  int *ptr = (int *) mymalloc (sizeof(int));
-  *ptr = 8;
-  printf("Adresse 1 : %p, valeur (8): %i\n", ptr, *ptr );
-  char *ptr2 = (char *) mymalloc (1000);
-  ptr2[0] = (char) 'B';
-  ptr2[1] = (char) 'I';
-  ptr2[2] = (char) 'T';
-  ptr2[3] = (char) 'E';
-  ptr2[4]= (char) '\0';
-  printf("Adresse 2 : %p, valeur (BITE): %s\n", ptr2, ptr2 );
-  double *ptr3 = (double *) mymalloc (sizeof(double));
-  *ptr3 = 13.5;
-  printf("Adresse 3 : %p, valeur (13.5): %lf\n", ptr3, *ptr3 );
-  long *ptr4 = (long *) mymalloc (sizeof(long));
-  *ptr4 = 22;
-  printf("Adresse 1  : %p, valeur (8): %i\n", ptr, *ptr );
-  printf("Adresse 2  : %p, valeur (BITE): %s\n", ptr2, ptr2 );
-  printf("Adresse 3  : %p, valeur (13.5): %lf\n", ptr3, *ptr3 );
-  printf("Adresse 4  : %p, valeur (22): %ld\n", ptr4, *ptr4 );
-  return 0;
-}
-*/
