@@ -10,6 +10,15 @@ mymalloc.o: mymalloc.c mymalloc.h
 tests.o: tests.c mymalloc.h
 	@gcc -c tests.c -lcunit -o tests.o
 
+clean:
+	@rm -rf *.o
+
+mrproper: clean
+	@rm -rf mymalloc perf perfvect
+
+# Ci dessous ca ne sert à rien pour le projet en tant que tel
+# C'est pour compiler les tests de performances
+
 perf: mymalloc.o perf.o
 	@gcc -o perf mymalloc.o perf.o
 	@rm -rf *.o
@@ -24,8 +33,6 @@ perfvect: mymalloc.o perfvect.o
 perfvect.o: perfvect.c mymalloc.h
 		@gcc -c perfvect.c -o perfvect.o -lm
 
-clean:
-	@rm -rf *.o
 
-mrproper: clean
-	@rm -rf mymalloc perf perfvect
+cleanexe: clean #Lol Kleenex :P
+	@rm -rf perfvect perf
