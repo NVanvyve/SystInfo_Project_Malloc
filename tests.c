@@ -23,9 +23,10 @@ MARS 2016
 void test_myfree_desalloc(void)
 {
   int* pointeurtest = (int *) mymalloc(sizeof(int));
+  block_header *bh_test = (block_header *)(pointeurtest-BH_SIZE);
   myfree(pointeurtest);
-  block_header *bh_test = ((block_header *)(pointeurtest-4));
-  CU_ASSERT_EQUAL(((*bh_test).alloc),0);
+  printf("\n Valeur du alloc :%i\n", bh_test->alloc);
+  CU_ASSERT_EQUAL((bh_test->alloc),0);
 }
 
 /* Test si alloc passe bien à 1 apres mymalloc*/

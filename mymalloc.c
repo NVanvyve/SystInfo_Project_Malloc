@@ -53,8 +53,9 @@ void *mymalloc (size_t size_asked) {
     size_disp = 0; // On reinitialise le code
 
     while ((ptr + size_disp) < last && (ptr+size_disp)->alloc == 0 && size_disp != size_asked){
-      size_disp += (ptr + size_disp)->size + BH_SIZE; // Tant que la zone de memoire est libre et que la size_disp est differente
-                                                      // de la tille demandee, on rajoute la memoire libre a size_disp
+      size_disp += (ptr + size_disp)->size + BH_SIZE; // Tant que la zone de memoire est
+      // libre et que la size_disp est differente de la taille demandee, on rajoute la
+      // memoire libre a size_disp
     }
 
     if (ptr == last  || ptr + size_disp == last ) {
@@ -67,18 +68,21 @@ void *mymalloc (size_t size_asked) {
       best_ptr = ptr;
     }
 
-    if (size_disp > size_asked) { // On a trouve un e zone de memoire plus grande que ce que demande
+    if (size_disp > size_asked) { // On a trouve une zone de memoire plus
+                                 // grande que ce que demande
       fit = 1;
-      if (size_disp > best_size) { // Si on ne trouve pas de zone de taille exacte, on separe la plus grande
-                                   // zone de memoire trouvee
+      if (size_disp > best_size) { // Si on ne trouve pas de zone de taille exacte,
+                                   // on separe la plus grande zone de memoire trouvee
         best_ptr = ptr;
         best_size = size_disp;
       }
       ptr += ptr->size; // On checke a partir de chaque block_header
     }
 
-    if (size_disp < size_asked && !limit_reached) { // La taille disponible jusqu'a la prochaine zone allouee est trop petite
-      ptr += size_disp + BH_SIZE + (ptr+size_disp)->size; // Donc on se deplace apres la zone occupee, en "territoire libre"
+    if (size_disp < size_asked && !limit_reached) { // La taille disponible jusqu'a la
+                                                   // prochaine zone allouee est trop petite
+      ptr += size_disp + BH_SIZE + (ptr+size_disp)->size; // Donc on se deplace apres la
+                                                // zone occupee, en "territoire libre"
     }
 
 
@@ -86,8 +90,10 @@ void *mymalloc (size_t size_asked) {
   }
 
   if (!fit) { // Si aucune zone n'a ete trouvee
-    if (ptr+size_asked > limit) return NULL; // Si la taille de heap n'est pas suffisante, on ne l'augmente pas et on reourne NULL
-    int mem = last->size; // On se souviens de la taille qui restait entre le last et le limit
+    if (ptr+size_asked > limit) return NULL; // Si la taille de heap n est pas suffisante,
+                                             // on ne l augmente pas et on reourne NULL
+    int mem = last->size; // On se souviens de la taille qui restait
+                          // entre le last et le limit
     ptr->alloc = 1; // On reserve la zone de memoire
     ptr->size = size_asked; // On lui donne la taille demandee
     last = ptr + BH_SIZE + size_asked; // On deplace le last
@@ -98,7 +104,8 @@ void *mymalloc (size_t size_asked) {
 
   if (best_size != size_asked) { // Si on doit redimensionner une zone de memoire
 	  (best_ptr+BH_SIZE+size_asked)->alloc = 0; // Le nouveau BH esst libre
-    (best_ptr+BH_SIZE+size_asked)->size = best_size - size_asked - BH_SIZE; // Et on regle sa taille
+    (best_ptr+BH_SIZE+size_asked)->size = best_size - size_asked - BH_SIZE; // Et on regle
+                                                                           // sa taille
   }
 
   best_ptr->alloc = 1; // On reserve le bloc
@@ -115,7 +122,7 @@ void *mymalloc (size_t size_asked) {
 */
 void *mycalloc (size_t size){
 	void *ptr = mymalloc(size); // On demande a mymalloc de nous fournir le meilleur pointeur
-    int *cl_ptr = (int *) ptr; // on le caste en (int *) pour l'initialisation
+  int *cl_ptr = (int *) ptr; // on le caste en (int *) pour l'initialisation
 	size = size4(size); // On arrondi sa taille au plus petit multiple de 4 superieur ou egal a la taille demandee
 	if (ptr == NULL) return NULL; // Si mymalloc n'a rien retourne on renvoie NULL
 	for (int i =0; i < size; i++) *(cl_ptr+i) = 0; // On initialise la zone de memoire a 0
@@ -127,12 +134,15 @@ void *mycalloc (size_t size){
         lors d'un appel anterieur a mymalloc() ou mycalloc().
         Si le pointeur ptr n'a pas ete obtenu par l'un de ces appels,
         ou s'il a deja ete libere avec myfree(ptr), le comportement est indetermine.
-        Si ptr est NULL, aucune tentative de liberation n'a lieu.
+        Si ptr est NULL, ou n appartient pas au heap,  aucune tentative de liberation n'a
+        lieu.
 */
 void myfree(void *ptr) {
   if (ptr==NULL) return; // Si on ne nous fourni pas un pointeur on ne fait rien
-  block_header *bh_ptr = ptr -4; // On trouve le bon BH
-  if (bh_ptr >= limit) return; // Si il n'appartient pas a notre heap
+  //printf("\nFREE POINTEUR : %p\n", ptr);
+  block_header *bh_ptr = ptr-BH_SIZE; // On trouve le bon BH
+  //printf("FREE BLOCK_HEADER : %p\n", bh_ptr);
+  if (bh_ptr >= limit) return; // Si il n appartient pas a notre heap
   if (bh_ptr < FLOOR) return; // on n y touche pas
   bh_ptr->alloc = 0; // Si il fait bien partie de notre heap, on le libere
 }
