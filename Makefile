@@ -20,3 +20,5 @@ perf.o: perf.c mymalloc.h
 
 perf: mymalloc.o perf.o
 	gcc -o perf mymalloc.o perf.o
+
+# Attention il doit excécuté aussi
