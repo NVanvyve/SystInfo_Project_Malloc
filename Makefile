@@ -2,6 +2,7 @@ all: mymalloc clean
 
 mymalloc: mymalloc.o tests.o
 	@gcc -o mymalloc mymalloc.o tests.o -lcunit
+	@./mymalloc
 
 mymalloc.o: mymalloc.c mymalloc.h
 	@gcc -c mymalloc.c -o mymalloc.o
