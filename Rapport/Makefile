@@ -1,4 +1,6 @@
 all: *tex
-	pdflatex *.tex
-	rm *.aux
-	rm *.log
+	@pdflatex *.tex
+	@pdflatex *.tex
+	@rm *.aux
+	@rm *.log
+	@rm *.toc -f

@@ -29,11 +29,8 @@ clean:
 	@rm -rf *.o
 
 cleanexe :
-	@rm -rf perf
-	@rm -rf perfvect
+	@rm -rf perf perfvect
 
 
 mrproper: clean
-	@rm -rf mymalloc
-	@rm -rf perf
-	@rm -rf perfvect
+	@rm -rf mymalloc perf perfvect
