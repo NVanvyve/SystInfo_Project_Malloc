@@ -11,12 +11,14 @@ tests.o: tests.c mymalloc.h
 
 perf: mymalloc.o perf.o
 	@gcc -o perf mymalloc.o perf.o
+	@rm -rf *.o
 
 perf.o: perf.c mymalloc.h
 	@gcc -c perf.c -o perf.o
 
 perfvect: mymalloc.o perfvect.o
 		@gcc -o perfvect mymalloc.o perfvect.o -lm
+		@rm -rf *.o
 
 perfvect.o: perfvect.c mymalloc.h
 		@gcc -c perfvect.c -o perfvect.o -lm
